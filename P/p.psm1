@@ -12,21 +12,22 @@
 
     Begin {
         # ----- List of words to ignore if they are part of an image link
-        $ExcludedWords = '-set.jpg',
+        $ExcludedWords = '\d*x\d*\.jpg',
+                    '-set.jpg',
                     '0003.jpg',
                     '22962675.jpg','31504128.jpg','31273357.jpg','5009.jpg','/17_','/7_','468x60',
                     '60_001.jpg','6960553.jpg','6833789.jpg','6833789.jpg','6732258.jpg',
                     '7112430','7060344.jpg','7083247.jpg','7113434','400.jpg',
                     '80-7.jpg',
-                    'ajinx.jpg','akiss.jpg','ally1.jpg','anna','atk','allstarban.jpg','lstar.jpg','ahmc.jpg','antonella.jpg',
+                    'ajinx.jpg','akiss.jpg','ally1.jpg','anna','atk','allstarban.jpg','lstar.jpg','ahmc.jpg','antonella.jpg','avatar.jpg',
                     '/b/','backtohome','backtohome','banner','bella.jpg','bellaclu','big.jpg','bn.jpg','bookmark','box_title_main_menu','bulkpic','bianca1.jpg',
                     'baberoad.jpg','bann-01b.jpg',
-                    '/cm/','chase.jpg','cosmid.jpg',
+                    '/cm/','chase.jpg','cosmid.jpg','cake.jpg',
                     'nymoody.jpg','ddfyes.jpg','dannii.jpg',
                     'eyr.jpg','ecole.jpg','egasson.jpg',
-                    'friends','front','frontpage','footer','fowler.jpg','ftvm.jpg','freckles.jpg',
+                    'friends','front','frontpage','footer','fowler.jpg','ftvm.jpg','freckles.jpg','fsc.jpg','freecams.jpg',
                     'gallery-','gallary_','girls/','girlsway.jpg','gainsize.jpg',
-                    'himg.jpg','header','header2','hor_',
+                    'himg.jpg','header','header2','hor_','high.jpg',
                     'iblowjob.jpg','/index_','imgs/','/img','images/15','inude.jpg',
                     'jenann.jpg',
                     'kris','karinew.jpg','kissban.jpg',
@@ -35,12 +36,13 @@
                     'newupdates','ngg','nov','ntyler.jpg',
                     'oct','offer','officefan.jpg',
                     'paris.jpg','paysite.jpg','paysite_icons','pinup.jpg','pinupfiles.jpg',
-                    'ridol.jpg','robyn.jpg',
+                    'ridol.jpg','robyn.jpg','rta.jpg',
                     'sascha','Screen-Shot','search','separator','simsnew.jpg','slide','small','snude.jpg','spinchix.jpg','spring.jpg','stmac.jpg','sdavies.jpg',
                     'spunky.jpg',
-                    't.jpg','tanude.jpg','Template','tgp','thumb','tk_','tn.jpg','tn2','tn_','/th','/tn','tessa.jpg',
+                    't.jpg','tanude.jpg','Template','tgp','thumb','tk_','tn.jpg','tn2','tn_','/th','/tn','tessa.jpg','tasia.jpg','totemnewyes3.jpg',
                     'upload/',
-                    'webcam','wifey.jpg',
+                    'vertical.jpg',
+                    'webcam','wifey.jpg','withher.jpg',
                     'ytease.jpg','ycake.jpg','ywinters.jpg','yesboobs.jpg',
                     'zara4.jpg','zishy.jpg'
     }
@@ -144,9 +146,17 @@
             #-------------------------------------------------------------------------------
             # ----- Check for full URL to Images ( jpgs )
             Write-Verbose "Get-PImages : ---------------------------- Checking for JPG with full URL"
-            $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | Where { Test-IEWebPath -Url $_ } | Foreach {
-                Write-Verbose "***** Found : $_"
-                Write-Output $_
+            Write-Verbose "===== These are the Links $($WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | out-String)"
+            $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | Foreach {
+                 # ----- There is a site that has problems.  Remming to testsbj
+                Write-Verbose "Is this link online? $_"
+             #   if ( Test-IEWebPath -Url $_ ) {
+                        Write-Verbose "***** Found : $_"
+                        Write-Output $_
+             #       }
+             #       else {
+             #           Write-Verbose "Nope"
+             #   }
             }
             #if ( $FullJPGUrl ) {
             #    Write-Verbose "***** Found: $FullJPGUrl"

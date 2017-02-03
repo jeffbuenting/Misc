@@ -7,9 +7,10 @@ import-module C:\Scripts\InternetExporer\InternetExplorer
 
 $TestCases = @(
     @{
-        Url = 'www.huskermax.com'
+        Url = 'http://www.huskermax.com'
     }
 )
+
 
 
 Describe "Get-pimage" {
@@ -20,16 +21,20 @@ Describe "Get-pimage" {
         $WebObject = New-Object -com "InternetExplorer.Application"
 	    $WebObject.visible = $True
   	    $WebObject.Navigate($Url)
-
+  $WebObject.Quit()
         "New Object"
+        Write-host $Url
+        $HTML = Invoke-WebRequest -uri $Url -ErrorAction Stop -Verbose:$false
 
-        $IE = New-Object -TypeName -Property @{
-            'HTML' = (  Invoke-WebRequest -uri $Url -ErrorAction Stop -Verbose:$false)
-            'Url' = $Url
-            'IEApp' = $Null
-            'IE' = $WebOject
-            'Title' = $Null
-        }
+ #       $IE = New-Object -TypeName -Property @{
+ #           'HTML' = $HTML
+ #           'Url' = $Url
+ #           'IEApp' = $Null
+ #           'IE' = $WebOject
+ #           'Title' = $Null
+ #       }
+
+        $IE = "hello"
 
 write-host "closing"
        $WebObject.Quit()
@@ -45,7 +50,7 @@ write-host "closing"
 
         "Url = $Url"
 
-        $Url | Get-IEWebPage
+        $Url | Get-IEWebPage -verbose
 
         $Images = $IE | Get-PImages
 

@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'http://www.xvideos.com/video15140281/gag_and_gape_04_rachael_madori_mandy_muse_savannah_fox_layla_price'
+$Url = 'http://www.mydailytube.com/video/touch-my-body-16066.html'
 
 $Url | Foreach {
 
@@ -65,7 +65,22 @@ $Url | Foreach {
     # ----- Save the video
     Try 
     {  
-        $Videos | Save-IEWebVideo -Destination $DestinationPath -Priority 'ForeGround' -ErrorAction Stop
+        Foreach ( $V in $Videos ) {
+            # ----- if the filename and extension are not the last thing at the end of the URL, then it needs to be extracted.  Using the fact that a ? is part of the URL as the indicator.
+            if ( $V -match "\?" ) {
+                Write-Output "filename is not at the end"
+                $FileName = ($V.split( '?' )[0]).Split('/')[-1]
+                
+            }
+            Else {
+                $FileName = $V.Split('/')[-1]
+            }
+
+           
+                
+            $V | Save-IEWebVideo -Destination "$DestinationPath" -Priority 'ForeGround' -ErrorAction Stop -Verbose
+            #P$V | Save-IEWebVideo -Destination "P:\Teens\Alisa Kiss\2016 - princess lea slave outfit\XoGoGo - Video\video.flv" -Priority ForeGround -ErrorAction Stop -Verbose
+        }
     }
     Catch 
     {

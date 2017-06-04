@@ -31,7 +31,7 @@
                     'himg.jpg','header','header2','hor_','high.jpg','hahn.jpg','hayleysec.jpg',
                     'iblowjob.jpg','/index_','imgs/','/img','images/15','inude.jpg','ingerie.jpg',
                     'jenann.jpg',
-                    'kris','karinew.jpg','kissban.jpg',
+                    'kris','karinew.jpg','kissban.jpg','kendrick.jpg',
                     'littlepics','lia.jpg','lily.jpg','live1.jpg','logo','louise.jpg','lflash.jpg','lucyv.jpg','ley.jpg','ldmyes.jpg',
                     'madden.jpg','makenzie10.jpg','morazzia.jpg','m1.nsimg.net','myboobs.jpg','mercedez.jpg','more-galleries.jpg','monroe.jpg',
                     'newupdates','ngg','nov','ntyler.jpg','nise.jpg','netis.jpg',

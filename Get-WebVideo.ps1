@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'http://www.mydailytube.com/video/touch-my-body-16066.html'
+$Url = ''
 
 $Url | Foreach {
 

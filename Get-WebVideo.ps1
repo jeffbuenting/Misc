@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = ''
+$Url = 'http://www.boobjunkie.com/nikki-sims-lotions-her-big-boobs/'
 
 $Url | Foreach {
 
@@ -75,11 +75,10 @@ $Url | Foreach {
             Else {
                 $FileName = $V.Split('/')[-1]
             }
-
-           
                 
-            $V | Save-IEWebVideo -Destination "$DestinationPath" -Priority 'ForeGround' -ErrorAction Stop -Verbose
-            #P$V | Save-IEWebVideo -Destination "P:\Teens\Alisa Kiss\2016 - princess lea slave outfit\XoGoGo - Video\video.flv" -Priority ForeGround -ErrorAction Stop -Verbose
+                $V | Save-IEWebVideo -Destination "$DestinationPath" -Priority 'ForeGround' -ErrorAction Stop -Verbose
+                #P$V | Save-IEWebVideo -Destination "P:\Teens\Alisa Kiss\2016 - princess lea slave outfit\XoGoGo - Video\video.flv" -Priority ForeGround -ErrorAction Stop -Verbose
+           
         }
     }
     Catch 

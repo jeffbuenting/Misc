@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'http://www.boobjunkie.com/nikki-sims-lotions-her-big-boobs/'
+$Url = 'http://www.mydailytube.com/video/christy-mack-johnny-sins-in-my-girlfriends-busty-friend-8473.html'
 
 $Url | Foreach {
 

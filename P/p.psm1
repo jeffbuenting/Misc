@@ -14,37 +14,38 @@
         # ----- List of words to ignore if they are part of an image link
         $ExcludedWords = '\d*x\d*\.jpg','\d\d_\d\d\.jpg',
                     '-set.jpg',
-                    '0003.jpg','0c257637.jpg',
+                    '0003.jpg','0c257637.jpg','0c373112.jpg',
                     '22962675.jpg','31504128.jpg','31273357.jpg','346.jpg','5009.jpg','/17_','/7_','468x60','468x100d.jpg','45fl.jpg',
+                    '468x80_art-lingerie_2.jpg',
                     '5002.jpg',
-                    '60_001.jpg','6960553.jpg','6833789.jpg','6833789.jpg','6732258.jpg',
-                    '7112430','7060344.jpg','7083247.jpg','7113434','400.jpg','728_4.jpg',
+                    '60_001.jpg','6823710','6960553.jpg','6833789.jpg','6833789.jpg','6732258.jpg',
+                    '7112430','7113434','7060344.jpg','7083247.jpg','7113434','400.jpg','728_4.jpg',
                     '80-7.jpg',
                     '98.jpg',
-                    'ajinx.jpg','akiss.jpg','ally1.jpg','anna','atk','allstarban.jpg','lstar.jpg','ahmc.jpg','ann5.jpg','antonella.jpg','avatar.jpg','ashlee.jpg',
-                    '/b/','backtohome','backtohome','baesnaps.jpg','banner','bella.jpg','bellaclu','big.jpg','bmarie.jpg','bn.jpg','bookmark','box_title_main_menu','brooklynna.jpg','bulkpic','bianca1.jpg',
+                    'addamsyes.jpg','ajinx.jpg','akiss.jpg','alisonbraz.jpg','ally1.jpg','angelabraz','anna','atk','allstarban.jpg','lstar.jpg','ahmc.jpg','ann5.jpg','antonella.jpg','avatar.jpg','ashlee.jpg',
+                    '/b/','backtohome','backtohome','badoinkvr1.jpg','baebz.jpg','baesnaps.jpg','banner','bella.jpg','bellaclu','big.jpg','bikinigirls.jpg','bmarie.jpg','bn.jpg','bookmark','box_title_main_menu','brooklynna.jpg','bulkpic','bianca1.jpg',
                     'baberoad.jpg','bann-01b.jpg',
-                    '/cm/','chase.jpg','cosmid.jpg','cake.jpg','candygirl.jpg','chey.jpg','camsodagirl.jpg','CXiXwn.jpg',
-                    'nymoody.jpg','ddfyes.jpg','dannii.jpg','dice.jpg',
-                    'eyr.jpg','ecole.jpg','eclub.jpg','egasson.jpg','edildo.jpg','esperanza.jpg','evilangelmini2',
-                    'friends','front','frontpage','footer','fowler.jpg','ftvm.jpg','freckles.jpg','fsc.jpg','freecams.jpg','folio.jpg','-f2.jpg',
+                    '/cm/','csh_468x80_2.jpg','chase.jpg','cosmid.jpg','cake.jpg','candygirl.jpg','chey.jpg','camsodagirl.jpg','CXiXwn.jpg',
+                    'darciecher.jpg','nymoody.jpg','ddfyes.jpg','dannii.jpg','dice.jpg','dream',
+                    'eyr.jpg','ecole.jpg','eclub.jpg','egasson.jpg','edildo.jpg','esperanza.jpg','evilangelmini2','ewa',
+                    'fancentro.jpg','friends','front','frontpage','footer','fowler.jpg','ftvm.jpg','ftvgirls.jpg','freckles.jpg','fsc.jpg','freecams.jpg','folio.jpg','-f2.jpg',
                     'gallery-','gallary_','gemma.jpg','girls/','girlsway.jpg','gainsize.jpg','glamm.jpg','glamourshow.jpg',
-                    'himg.jpg','header','header2','hor_','high.jpg','hahn.jpg','hayleysec.jpg','hayleys.jpg',
-                    'iblowjob.jpg','/index_','imgs/','/img','images/15','inude.jpg','ingerie.jpg',
-                    'jenann.jpg','jay.jpg',
-                    'kay.jpg','kris','karinew.jpg','khandi.jpg','kimber.jpg','kissban.jpg','kiraqueen.jpg','kendrick.jpg',
+                    'himg.jpg','hdlove.jpg','header','header2','hor_','high.jpg','hahn.jpg','hayleysec.jpg','hayleys.jpg',
+                    'iblowjob.jpg','/index_','imgs/','/img','images/15','inude.jpg','ingerie.jpg','istrp.jpg',
+                    'jelenasexy','jenann.jpg','jay.jpg','jess\d*',
+                    'Katie.jpg','katrinporto','kay.jpg','kris','karinew.jpg','khandi.jpg','kimber.jpg','kissban.jpg','kiraqueen.jpg','kendrick.jpg',
                     'littlepics','lia.jpg','lily.jpg','live1.jpg','logo','louise.jpg','lflash.jpg','lucyv.jpg','ley.jpg','ldmyes.jpg','laurenp.jpg',
-                    'main','madden.jpg','mac*kenzies*\d*.jpg','maren.jpg','marxs.jpg','monicam.jpg','morazzia.jpg','m1.nsimg.net','myboobs.jpg','mercedez.jpg','more-galleries.jpg','monroe.*\.jpg',
-                    'natashaban.jpg','newupdates','nfbusty.jpg','ngg','nov','ntyler.jpg','nise.jpg','netis.jpg',
+                    'mancini.jpg','main','madden.jpg','mac*kenzies*\d*.jpg','maren.jpg','marxs.jpg','monicam.jpg','morazzia.jpg','m1.nsimg.net','myboobs.jpg','mercedez.jpg','more-galleries.jpg','monroe.*\.jpg',
+                    'natashaban.jpg','newupdates','nfbusty.jpg','ng2.jpg','ngg','nicolette.jpg','ninakayy.jpg','nov','ntyler.jpg','nise.jpg','netis.jpg',
                     'oct','offer','officefan.jpg','orig_\d*\.jpg','olivia.jpg',
-                    'paris.jpg','paysite.jpg','paysite_icons','pinup.jpg','pinupfiles.jpg','peta.jpg',
+                    'paris.jpg','paysite.jpg','paysite_icons','petabraz.jpg','pinup.jpg','pinupfiles.jpg','peta.jpg','premium.jpg',
                     'rain.jpg','ridol.jpg','robyn.jpg','rta.jpg','realgirls.jpg',
-                    'sascha','scorelandyes.jpg','Screen-Shot','search','seeher.jpg','separator','simsnew.jpg','siri.jpg','slide','small','smclub.jpg','snude.jpg','sophiedee1.jpg','sophy.jpg','spinchix.jpg','spring.jpg','stasyq.jpg','stmac.jpg','sdavies.jpg',
+                    'sascha','scorelandyes.jpg','Screen-Shot','search','seeher.jpg','separator','simsnew.jpg','sheridan.jpg','siri.jpg','slide','small','smclub.jpg','snude.jpg','sophiedee1.jpg','sophy.jpg','spinchix.jpg','spring.jpg','stasyq.jpg','stmac.jpg','sdavies.jpg',
                     'spunky.jpg','_sarina.jpg','smith.jpg',
-                    't.jpg','tanude.jpg','Template','tgp','thumb','tk_','tn.jpg','tn2','tn_','/th','/tn','tn-','tessa.jpg','tasia.jpg','totemnewyes3.jpg','trueamateur.jpg','typein.jpg',
+                    't.jpg','tanude.jpg','Template','tgp','thumb','tk_','tn.*?\.jpg','tn2','tn_','/th','/tn','tn-','tessa.jpg','tasia.jpg','totemnewyes3.jpg','tranny.jpg','trueamateur.jpg','typein.jpg',
                     'upload/',
                     'vanessa-black-lace-one-piece-bella-club-2.jpg','vertical.jpg','sarinavalentina.jpg',
-                    'webcam','webcamyes.jpg','wellhello.jpg','wifey.jpg','withher.jpg','ww2.jpg',
+                    'webcam','webcamyes.jpg','wellhello.jpg','wifey.jpg','withher.jpg','ww2.jpg','webbie.jpg',
                     'yea.jpg','ytease.jpg','ycake.jpg','ywinters.jpg','yesboobs.jpg','yjay.jpg',
                     'zara4.jpg','zishy.jpg'
     }
@@ -260,6 +261,9 @@
                     if ( -not ( $_ -match 'http:\/\/' ) ) { 
                             $Root = Get-HTMLBaseUrl -Url $WP.Url -Verbose
                             if ( -Not $Root ) { $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose }
+
+                            # ----- Here we need to check if there is a duplicate in the Url
+
                             # ----- Test if webpage exists
                             if ( Test-IEWebPath -url $Root$HREF ) {
                                 write-Verbose "Get-PImage : Malformed web page.  checking for //"
@@ -269,18 +273,27 @@
                                     $HREF = $HREF.substring[1] 
                                 }
 
-                                if ( -Not (Test-IEWebPath -Url $Root$HREF) ) {
-                                    Throw "Get-PImage : WebPage does not exist $Root$HREF"
+                                $L = "$Root$HREF"
+
+                                if ( -Not (Test-IEWebPath -Url $L) ) {
+                                    Throw "Get-PImage : WebPage does not exist $L"
                                 } 
+                            }
+                            else {
+                                # ----- Here we need to check if there is a duplicate in the Url
+                                Write-Verbose "Problem with Url.  Checking for duplcate folders.in $Root$HREF"
+                                $L = ("$Root$HREF" -SPlit '/' | Select-Object -Unique) -Join '/'
+
+                                Write-Verbose "New Link = $L"
                             }
 
 
 
-                            Write-Verbose "Get-PImages : ---------------------------- Following Link: $Root$HREF"
+                            Write-Verbose "Get-PImages : ---------------------------- Following Link: $L"
                             Try {
                                     # ----- Check if we are recursing and how deep we have gone.
                                     if ( $RecurseLevel -le $MaxRecurseLevel+1 ) { 
-                                        Write-Output ( Get-IEWebPage -Url $Root$HREF -Visible | Get-PImages -RecurseLevel $RecurseLevel -Verbose )
+                                        Write-Output ( Get-IEWebPage -Url $L -Visible | Get-PImages -RecurseLevel $RecurseLevel -Verbose )
                                     }
                                 }
                                 Catch {

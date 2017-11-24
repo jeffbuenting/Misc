@@ -1,4 +1,108 @@
-﻿Function Get-PImages {
+﻿# -------------------------------------------------------------------------------------
+
+Function Get-PImageJPGFromSRC {
+
+<#
+    .synopsis
+        Does a SRC tag have a jpg file
+#>
+
+    [CmdletBinding()]
+    Param (
+        [PSCustomObject[]]$WebPage,
+
+        [string[]]$ExcludedWords
+    )
+
+    Process {
+        $Pics = @()
+
+        #-------------------------------------------------------------------------------
+        # ----- Images on the page.
+        Write-verbose "Get-PImages : ---------------------------- Checking for images on page."
+
+        $WP.HTML.images | where src -match '\d*\.jpg' | foreach {
+            $SRC = $_.SRC
+
+            Write-Verbose "Get-PImages : Examining: $($_.src)"
+
+            # ----- Check if any excluded word is in the string.
+            if ( $_.src | Select-String -Pattern $ExcludedWords -NotMatch ) {                                      
+
+                    # ----- Match was 
+                    Write-Verbose "Get-PImage : ----- $SRC -- Does the image start with HTTP?" 
+                    if ( ( $_.SRC -Match 'http:\/\/.*\/\d*\.jpg' ) -or ($_.SRC -Match 'http:\/\/.*\d*\.jpg' ) ) { 
+                            Write-Verbose "Get-PImages : returning full JPG Url $($_.SRC)"
+                      
+                            $Pics += $_.SRC
+                            Write-Verbose "Get-PImages : -----Found: $($_.SRC)"
+                            Write-Output $_.SRC 
+                    }
+
+                    Write-Verbose "Get-PImage : ----- $($_.src) -- No HTTP"                  
+                    If ( ($_.SRC -notmatch 'http:\/\/.*' ) ) {
+                            
+                                $PotentialIMG = $_.SRC
+                            
+                                # ----- Check if the link contains /tn_.  if so remove and process image
+                                if ( $PotentialIMG.Contains( "\/tn_") ) {
+                                    $PotentialIMG = $PotentialIMG.Replace( '/tn_','/')
+                                }
+
+                                Write-Verbose "Get-PImages : JPG Url is relitive path.  Need base/root."
+                                $Root = Get-HTMLBaseUrl -Url $WP.Url -Verbose
+                                if ( -Not $Root ) { $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose }
+
+                                # ----- Check to see if valid URL.  Should not contain: //
+                                if ( ("$Root$_" | select-string -Pattern '\/\/' -allmatches).matches.count -gt 1 )  {
+                                    Write-Verbose "Get-PImages : Illegal character, Getting Root"
+                                    $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose
+                                }
+
+                           
+
+                                # ----- Checking if image is a valid path
+                                # $URL = "$Root$($_.SRC)"
+                                #  Write-Verbose "+++++++++++$Root$($_.SRC)"
+                                if ( Test-IEWebPath -Url "$Root$PotentialIMG" -ErrorAction SilentlyContinue ) {
+                                        $Pics += "$Root$PotentialIMG"
+
+                                        Write-Verbose "-----Found: $Root$PotentialIMG"
+                                        Write-Output "$Root$PotentialIMG"
+                                    }
+                                    else {
+                                        Write-Verbose "Get-PImage : Root/SRC is not valid.  Checking Root/JPG"
+                                        $JPG = $PotentialIMG | Select-String -Pattern '([^\/]+.jpg)' | foreach { $_.Matches[0].value }
+                                        if ( Test-IEWebPath -Url $Root$JPG ) {
+                                            Write-Verbose "-----Found: $Root$JPG"
+                                            Write-Output $Root$JPG
+                                        }
+                                }
+                            }
+                            Else {
+                                Write-Verbose "Get-PImages :  Image not found $($_.SRC)"
+                                write-verbose "$_.SRC"
+                                write-Verbose "fluffernuter"
+
+                        
+                            
+                    }
+                }
+                else {
+                    Write-Verbose "$($_.SRC) matches:"
+                    Write-Verbose "Excluded = $($_.src | Select-String -Pattern $ExcludedWords -NotMatch | Out-String ) "
+            }
+
+        }
+
+        Write-Output $Pics
+
+    }
+}
+
+# -------------------------------------------------------------------------------------
+
+Function Get-PImages {
 
     [CmdletBinding()]
     Param (
@@ -10,12 +114,7 @@
         [int]$RecurseLevel = 0,
 
         [int]$MaxRecurseLevel = 1
-    )
-
-    Begin {
-       
-    }
-   
+    ) 
 
     process {
         Write-Verbose "Get-PImage : Recurse Level : $RecurseLevel"
@@ -29,85 +128,7 @@
 
             Write-Verbose "Get-PImages : Getting Images from $($WP.URL)..."
 
-            $Pics = @()
-
-            #-------------------------------------------------------------------------------
-            # ----- Images on the page.
-            Write-verbose "Get-PImages : ---------------------------- Checking for images on page."
-
-            $WP.HTML.images | where src -match '\d*\.jpg' | foreach {
-                $SRC = $_.SRC
-
-                Write-Verbose "Get-PImages : Examining: $($_.src)"
-
-                # ----- Check if any excluded word is in the string.
-                if ( $_.src | Select-String -Pattern $ExcludedWords -NotMatch ) {                                      
-
-                        # ----- Match was 
-                        Write-Verbose "Get-PImage : ----- $SRC -- Does the image start with HTTP?" 
-                        if ( ( $_.SRC -Match 'http:\/\/.*\/\d*\.jpg' ) -or ($_.SRC -Match 'http:\/\/.*\d*\.jpg' ) ) { 
-                                Write-Verbose "Get-PImages : returning full JPG Url $($_.SRC)"
-                      
-                                $Pics += $_.SRC
-                                Write-Verbose "Get-PImages : -----Found: $($_.SRC)"
-                                Write-Output $_.SRC 
-                        }
-
-                        Write-Verbose "Get-PImage : ----- $($_.src) -- No HTTP"                  
-                        If ( ($_.SRC -notmatch 'http:\/\/.*' ) ) {
-                            
-                                    $PotentialIMG = $_.SRC
-                            
-                                    # ----- Check if the link contains /tn_.  if so remove and process image
-                                    if ( $PotentialIMG.Contains( "\/tn_") ) {
-                                        $PotentialIMG = $PotentialIMG.Replace( '/tn_','/')
-                                    }
-
-                                    Write-Verbose "Get-PImages : JPG Url is relitive path.  Need base/root."
-                                    $Root = Get-HTMLBaseUrl -Url $WP.Url -Verbose
-                                    if ( -Not $Root ) { $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose }
-
-                                    # ----- Check to see if valid URL.  Should not contain: //
-                                    if ( ("$Root$_" | select-string -Pattern '\/\/' -allmatches).matches.count -gt 1 )  {
-                                        Write-Verbose "Get-PImages : Illegal character, Getting Root"
-                                        $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose
-                                    }
-
-                           
-
-                                    # ----- Checking if image is a valid path
-                                   # $URL = "$Root$($_.SRC)"
-                                  #  Write-Verbose "+++++++++++$Root$($_.SRC)"
-                                    if ( Test-IEWebPath -Url "$Root$PotentialIMG" -ErrorAction SilentlyContinue ) {
-                                            $Pics += "$Root$PotentialIMG"
-
-                                            Write-Verbose "-----Found: $Root$PotentialIMG"
-                                            Write-Output "$Root$PotentialIMG"
-                                        }
-                                        else {
-                                            Write-Verbose "Get-PImage : Root/SRC is not valid.  Checking Root/JPG"
-                                            $JPG = $PotentialIMG | Select-String -Pattern '([^\/]+.jpg)' | foreach { $_.Matches[0].value }
-                                            if ( Test-IEWebPath -Url $Root$JPG ) {
-                                                Write-Verbose "-----Found: $Root$JPG"
-                                                Write-Output $Root$JPG
-                                            }
-                                    }
-                                }
-                                Else {
-                                    Write-Verbose "Get-PImages :  Image not found $($_.SRC)"
-                                    write-verbose "$_.SRC"
-                                    write-Verbose "fluffernuter"
-
-                        
-                            
-                        }
-                    }
-                    else {
-                        Write-Verbose "$($_.SRC) matches:"
-                        Write-Verbose "Excluded = $($_.src | Select-String -Pattern $ExcludedWords -NotMatch | Out-String ) "
-                }
-
-            }
+            $Pics = Get-PImageJPGFromSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
 
            
             if ( $Pics ) { Break }

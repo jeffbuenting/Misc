@@ -9,12 +9,13 @@ Function Get-PImageJPGFromSRC {
 
     [CmdletBinding()]
     Param (
-        [PSCustomObject[]]$WebPage,
+        [PSCustomObject]$WebPage,
 
         [string[]]$ExcludedWords
     )
 
     Process {
+        $WP = $WebPage
         $Pics = @()
 
         #-------------------------------------------------------------------------------
@@ -102,6 +103,53 @@ Function Get-PImageJPGFromSRC {
 
 # -------------------------------------------------------------------------------------
 
+Function Get-PImageJPGFFromFullURL {
+
+<#
+    .synopsis
+        is there a JPG link with a full url?
+#>
+
+    [CmdletBinding()]
+    Param (
+        [PSCustomObject]$WebPage,
+
+        [string[]]$ExcludedWords
+    )
+
+    Process {
+        $WP = $WebPage
+
+        #-------------------------------------------------------------------------------
+            # ----- Check for full URL to Images ( jpgs )
+            Write-Verbose "Get-PImages : ---------------------------- Checking for JPG with full URL"
+            Write-Verbose "===== These are the Links $($WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | out-String)"
+            $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | Foreach {
+                 # ----- There is a site that has problems.  Remming to testsbj
+                Write-Verbose "Is this link online? $_"
+             #   if ( Test-IEWebPath -Url $_ ) {
+                        Write-Verbose "***** Found : $_"
+                        Write-Output $_
+             #       }
+             #       else {
+             #           Write-Verbose "Nope"
+             #   }
+            }
+            #if ( $FullJPGUrl ) {
+            #    Write-Verbose "***** Found: $FullJPGUrl"
+            #    Write-Output $FullJPGUrl
+            #}
+
+         #   if ( $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } ) { break }
+    }
+}
+
+# -------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
+
 Function Get-PImages {
 
     [CmdletBinding()]
@@ -130,30 +178,10 @@ Function Get-PImages {
 
             $Pics = Get-PImageJPGFromSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
 
-           
             if ( $Pics ) { Break }
             
-            #-------------------------------------------------------------------------------
             # ----- Check for full URL to Images ( jpgs )
-            Write-Verbose "Get-PImages : ---------------------------- Checking for JPG with full URL"
-            Write-Verbose "===== These are the Links $($WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | out-String)"
-            $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | Foreach {
-                 # ----- There is a site that has problems.  Remming to testsbj
-                Write-Verbose "Is this link online? $_"
-             #   if ( Test-IEWebPath -Url $_ ) {
-                        Write-Verbose "***** Found : $_"
-                        Write-Output $_
-             #       }
-             #       else {
-             #           Write-Verbose "Nope"
-             #   }
-            }
-            #if ( $FullJPGUrl ) {
-            #    Write-Verbose "***** Found: $FullJPGUrl"
-            #    Write-Output $FullJPGUrl
-            #}
-
-         #   if ( $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } ) { break }
+            $Pics =  Get-PImageJPGFFromFullURL -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
             
             #-------------------------------------------------------------------------------
             # ----- Check to see if there are links to images ( jpgs ) - Relative Links (not full URL)

@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'http://www.mydailytube.com/video/christy-mack-johnny-sins-in-my-girlfriends-busty-friend-8473.html'
+$Url = 'http://www.mydailytube.com/video/meet-madden-baby-oil-bikini-16077.html'
 
 $Url | Foreach {
 

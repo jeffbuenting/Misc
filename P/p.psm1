@@ -145,47 +145,29 @@ Function Get-PImageJPGFFromFullURL {
 }
 
 # -------------------------------------------------------------------------------------
-# -------------------------------------------------------------------------------------
-# -------------------------------------------------------------------------------------
-# -------------------------------------------------------------------------------------
-# -------------------------------------------------------------------------------------
 
-Function Get-PImages {
+Function Get-PImageJPGFFromRelativeLink {
+
+<#
+    .synopsis
+        is there a relative link that has a JPG?
+#>
 
     [CmdletBinding()]
     Param (
-        [Parameter(ValueFromPipeline=$True)]
-        [PSCustomObject[]]$WebPage,
+        [PSCustomObject]$WebPage,
 
-        [string[]]$ExcludedWords,
+        [string[]]$ExcludedWords
+    )
 
-        [int]$RecurseLevel = 0,
+    Process {
+        $WP = $WebPage
 
-        [int]$MaxRecurseLevel = 1
-    ) 
-
-    process {
-        Write-Verbose "Get-PImage : Recurse Level : $RecurseLevel"
-        Write-Verbose "Adding recurse level"
-        $RecurseLevel ++
-
-        ForEach ( $WP in $WebPage ) {
-
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-
-            Write-Verbose "Get-PImages : Getting Images from $($WP.URL)..."
-
-            $Pics = Get-PImageJPGFromSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
-
-            if ( $Pics ) { Break }
-            
-            # ----- Check for full URL to Images ( jpgs )
-            $Pics =  Get-PImageJPGFFromFullURL -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
-            
-            #-------------------------------------------------------------------------------
+        #-------------------------------------------------------------------------------
             # ----- Check to see if there are links to images ( jpgs ) - Relative Links (not full URL)
+            Write-Verbose "----------------------------------------------------------------------"
             Write-Verbose "Get-PImages : ---------------------------- Checking for Links to JPGs"
+            Write-Verbose "----------------------------------------------------------------------"
             $Root = Get-HTMLBaseUrl -Url $WP.Url -Verbose
             if ( -Not $Root ) { $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose }
 
@@ -228,10 +210,29 @@ Function Get-PImages {
                         }
                 }
             }
-            
-            if ( $WP.HTML.links | where href -like *.jpg ) { break }
+    }
+}
 
-            #-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
+
+Function Get-PImageJPGFFromHTMLLink {
+
+<#
+    .synopsis
+        Check for links to image page ( ddd.htm )
+#>
+
+    [CmdletBinding()]
+    Param (
+        [PSCustomObject]$WebPage,
+
+        [string[]]$ExcludedWords
+    )
+
+    Process {
+        $WP = $WebPage
+
+        #-------------------------------------------------------------------------------
             # ----- Check for links to image page ( ddd.htm )
             Write-Verbose "Get-PImages : ---------------------------- Checking for html links"
 
@@ -335,10 +336,31 @@ Function Get-PImages {
                     }
                 }
             }
-  
-            if ( $WP.HTML.Links | where href -like  *.html ) { Break }
 
-            #-------------------------------------------------------------------------------
+    }
+}
+
+# -------------------------------------------------------------------------------------
+
+Function Get-PImageJPGFFromThumbnailSRC {
+
+<#
+    .synopsis
+       
+#>
+
+    [CmdletBinding()]
+    Param (
+        [PSCustomObject]$WebPage,
+
+        [string[]]$ExcludedWords
+    )
+
+    Process {
+        $WP = $WebPage
+
+
+        #-------------------------------------------------------------------------------
             # ----- Checking for links where the src is a jpg thumbnail ( link does not end in html )
             Write-Verbose "checking for links where the src is a tn.jpg"
             $WP.HTML.Links | where { ( $_.innerHTML -match 'src=.*tn\.jpg' ) } | Foreach {
@@ -359,7 +381,88 @@ Function Get-PImages {
                 
             }
 
-            if ( $Pics ) { Break }
+    }
+}
+
+# -------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
+
+Function Get-PImages {
+
+    [CmdletBinding()]
+    Param (
+        [Parameter(ValueFromPipeline=$True)]
+        [PSCustomObject[]]$WebPage,
+
+        [string[]]$ExcludedWords,
+
+        [int]$RecurseLevel = 0,
+
+        [int]$MaxRecurseLevel = 1
+    ) 
+
+    process {
+        Write-Verbose "Get-PImage : Recurse Level : $RecurseLevel"
+        Write-Verbose "Adding recurse level"
+        $RecurseLevel ++
+
+        ForEach ( $WP in $WebPage ) {
+
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+
+            Write-Verbose "Get-PImages : Getting Images from $($WP.URL)..."
+
+            $Pics = Get-PImageJPGFromSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
+
+            if ( $Pics ) { 
+                Write-Verbose "images from src"
+                Write-Verbose "$($Pics | out-string)"
+                Write-Output $Pics
+                break 
+            }
+            
+            # ----- Check for full URL to Images ( jpgs )
+            $Pics =  Get-PImageJPGFFromFullURL -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
+
+            if ( $Pics ) { 
+                Write-Verbose "full URL to Images ( jpgs )"
+                Write-Verbose "$($Pics | out-string)"
+                Write-Output $Pics
+                break 
+            }
+            
+            # ----- Check to see if there are links to images ( jpgs ) - Relative Links (not full URL)
+            $Pics = Get-PImageJPGFFromRelativeLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
+            
+            if ( $Pics ) { 
+                Write-Verbose "JPGs from Relative Links"
+                Write-Verbose "$($Pics | out-string)"
+                Write-Output $Pics
+                break 
+            }
+
+            Write-Verbose "!!!!!!! No JPG from Relative Links"
+
+            # ----- Check for links to image page ( ddd.htm )
+            $Pics = Get-PImageJPGFFromHTMLLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
+  
+            if ( $Pics ) { 
+                Write-Verbose "JPGs links to images"
+                Write-Verbose "$($Pics | out-string)"
+                Write-Output $Pics
+                break 
+            }
+
+            # ----- Checking for links where the src is a jpg thumbnail ( link does not end in html )
+            $Pics = Get-PImageJPGFFromThumbnailSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose
+
+            if ( $Pics ) { 
+                Write-Verbose "Checking for links where the src is a jpg thumbnail ( link does not end in html )"
+                Write-Verbose "$($Pics | out-string)"
+                Write-Output $Pics
+                break 
+            }
            
         }
     }

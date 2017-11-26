@@ -104,32 +104,36 @@ foreach ( $L in $Links ) {
     $Images
     "-----------" 
 
-            
-    $Link = $IE.Url
+    $Images.Count
 
-    Write-Host "Saving Shortcut"
-    New-Shortcut -Link $Link -Path $DestinationPath -Verbose
-
-    Write-Host "Saving images..." -ForegroundColor Green
-    $Images | Save-IEWebImage -Destination $DestinationPath -Priority 'ForeGround' -verbose
+    if ( $Images.Count -gt 0 ) {
 
             
-    If ( $VerboseTest ) {
-            Write-Host "Opening Destination to double check if the images saved correctly" -ForegroundColor Green
-            explorer $DestinationPath
+        $Link = $IE.Url
 
-            if ( (New-Popup -Message "Did it Save Correctly" -Title 'No errors' -Time 60 -Buttons 'YesNo') -eq 6 ) {
-                write-host "Didn't Save,Will write to log" -ForegroundColor Green
-                $ImageSaveIssue += $L
+        Write-Host "Saving Shortcut"
+        New-Shortcut -Link $Link -Path $DestinationPath -Verbose
+
+        Write-Host "Saving images..." -ForegroundColor Green
+        $Images | Save-IEWebImage -Destination $DestinationPath -Priority 'ForeGround' -verbose
+
+            
+        If ( $VerboseTest ) {
+                Write-Host "Opening Destination to double check if the images saved correctly" -ForegroundColor Green
+                explorer $DestinationPath
+
+                if ( (New-Popup -Message "Did it Save Correctly" -Title 'No errors' -Time 60 -Buttons 'YesNo') -eq 6 ) {
+                    write-host "Didn't Save,Will write to log" -ForegroundColor Green
+                    $ImageSaveIssue += $L
+                }
             }
+            else { 
+                If ( $Images -eq $Null ) {
+                    write-host "Didn't Save,Will write to log" -ForegroundColor Green
+                    $ImageSaveIssue 
+                }
         }
-        else { 
-            If ( $Images -eq $Null ) {
-                write-host "Didn't Save,Will write to log" -ForegroundColor Green
-                $ImageSaveIssue 
-            }
     }
-
         
 
 

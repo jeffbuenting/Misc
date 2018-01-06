@@ -32,7 +32,7 @@ Function Get-PImageJPGFromSRC {
 
                     # ----- Match was 
                     Write-Verbose "Get-PImage : ----- $SRC -- Does the image start with HTTP?" 
-                    if ( ( $_.SRC -Match 'http:\/\/.*\/\d*\.jpg' ) -or ($_.SRC -Match 'http:\/\/.*\d*\.jpg' ) ) { 
+                    if ( ( $_.SRC -Match 'http:\/\/.*\/\d*\.jpg' ) -or ($_.SRC -Match 'http:\/\/.*\d*\.jpg' ) -or ( $_.SRC -Match 'https:\/\/.*\/\d*\.jpg' ) -or ($_.SRC -Match 'https:\/\/.*\d*\.jpg' ) ) { 
                             Write-Verbose "Get-PImages : returning full JPG Url $($_.SRC)"
                       
                             $Pics += $_.SRC
@@ -40,8 +40,8 @@ Function Get-PImageJPGFromSRC {
                             Write-Output $_.SRC 
                     }
 
-                    Write-Verbose "Get-PImage : ----- $($_.src) -- No HTTP"                  
-                    If ( ($_.SRC -notmatch 'http:\/\/.*' ) ) {
+                    Write-Verbose "Get-PImage : ----- $($_.src) -- No HTTP or HTTPS"                  
+                    If ( ($_.SRC -notmatch 'http:\/\/.*' ) -or ($_.SRC -notmatch 'https:\/\/.*') ) {
                             
                                 $PotentialIMG = $_.SRC
                             
@@ -124,7 +124,7 @@ Function Get-PImageJPGFFromFullURL {
             # ----- Check for full URL to Images ( jpgs )
             Write-Verbose "Get-PImages : ---------------------------- Checking for JPG with full URL"
             Write-Verbose "===== These are the Links $($WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | out-String)"
-            $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | Foreach {
+            $WP.HTML.links | where { (( $_.href -Match 'http:\/\/.*\.jpg' ) -or ( $_.href -Match 'https:\/\/.*\.jpg' ) ) -and ( -Not $_.href.contains('?') ) } | Select-Object -ExpandProperty HREF | Foreach {
                  # ----- There is a site that has problems.  Remming to testsbj
                 Write-Verbose "Is this link online? $_"
              #   if ( Test-IEWebPath -Url $_ ) {
@@ -431,6 +431,8 @@ Function Get-PImages {
 
             
             # ----- Check for full URL to Images ( jpgs )
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics =  Get-PImageJPGFFromFullURL -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
 
@@ -448,6 +450,8 @@ Function Get-PImages {
             }
             
             # ----- Check to see if there are links to images ( jpgs ) - Relative Links (not full URL)
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics = Get-PImageJPGFFromRelativeLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
             
@@ -467,6 +471,8 @@ Function Get-PImages {
             }
 
             # ----- Check for links to image page ( ddd.htm )
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics = Get-PImageJPGFFromHTMLLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
   
@@ -484,6 +490,8 @@ Function Get-PImages {
             }
 
             # ----- Checking for links where the src is a jpg thumbnail ( link does not end in html )
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics = Get-PImageJPGFFromThumbnailSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
 

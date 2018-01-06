@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'http://www.mydailytube.com/video/meet-madden-baby-oil-bikini-16077.html'
+$Url = 'http://www.mydailytube.com/video/stripper-9730.html'
 
 $Url | Foreach {
 

@@ -41,7 +41,7 @@ Function Get-PImageJPGFromSRC {
                     }
 
                     Write-Verbose "Get-PImage : ----- $($_.src) -- No HTTP or HTTPS"                  
-                    If ( ($_.SRC -notmatch 'http:\/\/.*' ) -or ($_.SRC -notmatch 'https:\/\/.*') ) {
+                    If ( ($_.SRC -notmatch 'http:\/\/.*' ) -and ($_.SRC -notmatch 'https:\/\/.*') ) {
                             
                                 $PotentialIMG = $_.SRC
                             
@@ -49,6 +49,19 @@ Function Get-PImageJPGFromSRC {
                                 if ( $PotentialIMG.Contains( "\/tn_") ) {
                                     $PotentialIMG = $PotentialIMG.Replace( '/tn_','/')
                                 }
+
+                                # ----- Try just adding http to the beginning and see if that is a valid URL
+                                Write-Verbose "Trying to add HTTP: if it begins with //"
+                                if ( $PotentialIMG.substring(0,2) -eq '//' ) {
+                                    Write-Verbose 'Yep // exists'
+                                    if ( Test-IEWebPath -Url "http:$PotentialIMG" -ErrorAction SilentlyContinue ) {
+                                        Write-Verbose "-----Found: http:$PotentialIMG"
+                                        $Pics += "http:$PotentialIMG"
+                                        Write-Output "http:$PotentialIMG"
+                                        Return
+                                    }
+                                }
+
 
                                 Write-Verbose "Get-PImages : JPG Url is relitive path.  Need base/root."
                                 $Root = Get-HTMLBaseUrl -Url $WP.Url -Verbose
@@ -142,6 +155,42 @@ Function Get-PImageJPGFFromFullURL {
 
          #   if ( $WP.HTML.links | where { ( $_.href -Match 'http:\/\/.*\.jpg' ) -and ( -Not $_.href.contains('?') ) } ) { break }
     }
+}
+
+Function Get-PImageJPGbyaddingHTTP {
+
+<#
+    .Synopsis
+        Sometimes it is as easy as just adding http to the beginning of the link.
+#>
+
+    [CmdletBinding()]
+    Param (
+        [PSCustomObject]$WebPage,
+
+        [string[]]$ExcludedWords
+    )
+
+    Process {
+        $WP = $WebPage
+
+        #-------------------------------------------------------------------------------
+            # ----- Check to see if there are links to images ( jpgs ) - Relative Links (not full URL)
+            Write-Verbose "----------------------------------------------------------------------"
+            Write-Verbose "Get-PImages : ---------------------------- Checking for Links to JPGs and try adding HTML"
+            Write-Verbose "----------------------------------------------------------------------"
+           
+            $WP.HTML.links | where href -like *.jpg | Select-Object -ExpandProperty href | Foreach {
+                Write-Verbose "Image Found: $_"
+
+                if ( Test-IEWebPath -Url "http:$_" -ErrorAction SilentlyContinue ) {
+                    Write-Verbose "-----Found: http:$_"
+                    Write-Output "http:$_"
+                }
+
+            }
+    }
+
 }
 
 # -------------------------------------------------------------------------------------
@@ -408,14 +457,15 @@ Function Get-PImages {
 
         ForEach ( $WP in $WebPage ) {
 
+            Write-Verbose "Get-PImages : Getting Images from $($WP.URL)..."
+
             Try {
                 Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-                Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+                Write-Verbose " Get-PImageJPGFromSRC"
+                Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"      
 
-                Write-Verbose "Get-PImages : Getting Images from $($WP.URL)..."
-
-                $Pics = Get-PImageJPGFromSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
-
+                $Pics = Get-PImageJPGFromSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop 
+             
                 if ( $Pics ) { 
                     Write-Verbose "images from src"
                     Write-Verbose "$($Pics | out-string)"
@@ -432,6 +482,7 @@ Function Get-PImages {
             
             # ----- Check for full URL to Images ( jpgs )
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose " Get-PImageJPGFromFullUr"
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics =  Get-PImageJPGFFromFullURL -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
@@ -451,6 +502,7 @@ Function Get-PImages {
             
             # ----- Check to see if there are links to images ( jpgs ) - Relative Links (not full URL)
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose " Get-PImageJPGFromRelativeLink"
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics = Get-PImageJPGFFromRelativeLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
@@ -470,8 +522,29 @@ Function Get-PImages {
                 Throw "Get-PImage : Error JPGs from Relative Links.`n`n     $ExceptionMessage`n     $ExceptionType"
             }
 
+            # ----- Check for links to image page and add http:
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose " Get-PImageJPGbyaddinghttp"
+            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Try {
+                $Pics = Get-PImageJPGbyaddingHTTP -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
+  
+                if ( $Pics ) { 
+                    Write-Verbose "JPGs links to images"
+                    Write-Verbose "$($Pics | out-string)"
+                    Write-Output $Pics
+                    break 
+                }
+            }
+            Catch {
+                $ExceptionMessage = $_.Exception.Message
+                $ExceptionType = $_.Exception.GetType().FullName
+                Throw "Get-PImage : Error JPGs links to images and add http.`n`n     $ExceptionMessage`n     $ExceptionType"
+            }
+
             # ----- Check for links to image page ( ddd.htm )
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose " Get-PImageJPGFromHTMLLink"
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics = Get-PImageJPGFFromHTMLLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
@@ -491,6 +564,7 @@ Function Get-PImages {
 
             # ----- Checking for links where the src is a jpg thumbnail ( link does not end in html )
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
+            Write-Verbose " Get-PImageJPGFromThumbnailSRC"
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
             Try {
                 $Pics = Get-PImageJPGFFromThumbnailSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop

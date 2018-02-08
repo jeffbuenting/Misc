@@ -7,7 +7,7 @@
 #--------------------------------------------------------------------------------------
 
 try {
-        import-module C:\Scripts\InternetExporer\InternetExplorer.psd1 -force -ErrorAction Stop
+        import-module C:\Scripts\InternetExplorer\InternetExplorer.psd1 -force -ErrorAction Stop
         Import-Module C:\scripts\FileSystem\filesystem.psd1 -force -ErrorAction Stop
         Import-Module c:\scripts\popup\popup.psm1 -force -ErrorAction Stop
         Import-Module C:\scripts\Shortcut\Shortcut.psm1 -Force -ErrorAction Stop
@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'http://www.mydailytube.com/video/stripper-9730.html'
+$Url = 'https://www.anyshemale.com/videos/4238/busty-bailey-jerking-her-big-dick/'
 
 $Url | Foreach {
 

@@ -104,7 +104,7 @@ Function Get-PImageJPGFromSRC {
                 }
                 else {
                     Write-Verbose "$($_.SRC) matches:"
-                    Write-Verbose "Excluded = $($_.src | Select-String -Pattern $ExcludedWords -NotMatch | Out-String ) "
+                    Write-Verbose "Excluded Pattern = $(($_.src | Select-String -Pattern $ExcludedWords).Pattern ) "
             }
 
         }
@@ -224,6 +224,18 @@ Function Get-PImageJPGFFromRelativeLink {
             $WP.HTML.links | where href -like *.jpg | Select-Object -ExpandProperty href | Foreach {
                 Write-Verbose "Image Found: $Root$_"
                 
+                # ----- Try just adding http to the beginning and see if that is a valid URL
+                Write-Verbose "Trying to add HTTP: if it begins with //"
+                if ( $_.substring(0,2) -eq '//' ) {
+                    Write-Verbose 'Yep // exists'
+                    if ( Test-IEWebPath -Url "http:$_" -ErrorAction SilentlyContinue ) {
+                        Write-Verbose "-----Found: http:$_"
+                        $Pics += "http:$_"
+                        Write-Output "http:$_"
+                        Return
+                    }
+                }
+
                 # ----- Check to see if valid URL.  Should not contain: //
                 Write-Verbose 'Checking if Valid Url. Should Not Contain: // or #'
                 if ( (("$Root$_" | select-string -Pattern '\/\/' -allmatches).matches.count -gt 1) -or ( ("$Root$_").contains('#') ) ) {
@@ -296,7 +308,7 @@ Function Get-PImageJPGFFromHTMLLink {
                 $L = @()
                 Foreach ( $H in $HTMLLinks ) {
                     write-Verbose "Checking $H"
-                    if ( $H -match 'http:\/\/' ) {
+                    if ( ($H -match 'http:\/\/') ) {
                             Write-Verbose "Full HTTP Url"
                             $RootForLink = Get-HTMLBaseUrl -Url $H -Verbose
                             if ( $Root -eq $RootForLink ) { 
@@ -308,8 +320,15 @@ Function Get-PImageJPGFFromHTMLLink {
                             }
                         }
                         else {
-                            Write-Verbose "Not full HTTP Url"
-                            $L += $H
+                            # ----- Need to add the root here to create full url.
+                            Write-Verbose "Not full HTTP Url adding root"
+                            # ----- excluding these words as given that they will no produce an image
+                            if ( $H -notmatch 'search' ) {
+                                $L += "$Root$H"
+                            }
+                            else {
+                                Write-Verbose "Link contained excluded word : search"
+                            }
                     }
 
                 }
@@ -324,10 +343,11 @@ Function Get-PImageJPGFFromHTMLLink {
                     $Root = $Null
 
                     if ( -not ( $_ -match 'http:\/\/' ) ) { 
+                            Write-verbose "includes HTTP://"
                             $Root = Get-HTMLBaseUrl -Url $WP.Url -Verbose
                             if ( -Not $Root ) { $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose }
 
-                            # ----- Here we need to check if there is a duplicate in the Url
+                            
 
                             # ----- Test if webpage exists
                             if ( Test-IEWebPath -url $Root$HREF ) {
@@ -338,7 +358,9 @@ Function Get-PImageJPGFFromHTMLLink {
                                     $HREF = $HREF.substring[1] 
                                 }
 
-                                $L = "$Root$HREF"
+                                Write-Verbose "Checking for duplcate folders.in $Root$HREF"
+                                $L = ("$Root$HREF" -SPlit '/' | Select-Object -Unique) -Join '/'
+
 
                                 if ( -Not (Test-IEWebPath -Url $L) ) {
                                     Throw "Get-PImage : WebPage does not exist $L"
@@ -380,7 +402,12 @@ Function Get-PImageJPGFFromHTMLLink {
                             # Write-Output (Get-IEWebPage -url $HREF -Visible | Get-Pics -Verbose)
                             # ----- Check if we are recursing and how deep we have gone.
                             if ( $RecurseLevel -le $MaxRecurseLevel+1 ) { 
-                                Write-Output (Get-IEWebPage -url $HREF -Visible | Get-PImages -RecurseLevel $RecurseLevel -ExcludedWords $ExcludedWords -Verbose)
+                                
+                                # ----- Here we need to check if there is a duplicate in the Url
+                                Write-Verbose "Problem with Url.  Checking for duplcate folders.in $HREF"
+                                $L = ("$HREF" -SPlit '/' | Select-Object -Unique) -Join '/'
+                                
+                                Write-Output (Get-IEWebPage -url $L -Visible | Get-PImages -RecurseLevel $RecurseLevel -ExcludedWords $ExcludedWords -Verbose)
                             }
                     }
                 }
@@ -522,25 +549,7 @@ Function Get-PImages {
                 Throw "Get-PImage : Error JPGs from Relative Links.`n`n     $ExceptionMessage`n     $ExceptionType"
             }
 
-            # ----- Check for links to image page and add http:
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Write-Verbose " Get-PImageJPGbyaddinghttp"
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Try {
-                $Pics = Get-PImageJPGbyaddingHTTP -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
-  
-                if ( $Pics ) { 
-                    Write-Verbose "JPGs links to images"
-                    Write-Verbose "$($Pics | out-string)"
-                    Write-Output $Pics
-                    break 
-                }
-            }
-            Catch {
-                $ExceptionMessage = $_.Exception.Message
-                $ExceptionType = $_.Exception.GetType().FullName
-                Throw "Get-PImage : Error JPGs links to images and add http.`n`n     $ExceptionMessage`n     $ExceptionType"
-            }
+            
 
             # ----- Check for links to image page ( ddd.htm )
             Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"

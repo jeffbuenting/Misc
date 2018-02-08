@@ -1,5 +1,5 @@
 ﻿try {
-        import-module C:\Scripts\InternetExporer\InternetExplorer.psd1 -force -ErrorAction Stop
+        import-module C:\Scripts\InternetExplorer\InternetExplorer.psd1 -force -ErrorAction Stop
         Import-Module C:\scripts\FileSystem\filesystem.psd1 -force -ErrorAction Stop
         Import-Module C:\scripts\Misc\p\p.psd1 -force -ErrorAction Stop 
         Import-Module c:\scripts\popup\popup.psm1 -force -ErrorAction Stop
@@ -14,40 +14,40 @@
 $Links = Import-CSV -Path 'P:\links\savepics.csv'
 
  # ----- List of words to ignore if they are part of an image link
-$ExcludedWords = '\d*x\d*\.jpg','\d\d_\d\d\.jpg',
-            '-set.jpg',
+$ExcludedWords = '-set.jpg',
             '0003.jpg','0c257637.jpg','0c373112.jpg',
-            '22962675.jpg','31504128.jpg','31273357.jpg','346.jpg','392x72_4','5009.jpg','/17_','/7_','468x60','468x100d.jpg','45fl.jpg',
+            '22962675.jpg',
+            '300nn2','31504128.jpg','31273357.jpg','346.jpg','392x72_4','5009.jpg','/17_','/7_','468x60','468x100d.jpg','45fl.jpg',
             '468x80_art-lingerie_2.jpg',
             '5002.jpg',
             '60_001.jpg','6823710','6960553.jpg','6833789.jpg','6833789.jpg','6732258.jpg',
             '7112430','7113434','7060344.jpg','7083247.jpg','7113434','400.jpg','728_4.jpg',
             '80-7.jpg',
             '98.jpg',
-            'addamsyes.jpg','ajinx.jpg','akiss.jpg','alisonbraz.jpg','ally1.jpg','anissamature','angelabraz','anna','ariac','atk','allstarban.jpg','lstar.jpg','ahmc.jpg','ann5.jpg','antonella.jpg','avatar.jpg','avery','ashlee.jpg','ava\d',
-            '/b/','backtohome','backtohome','badoinkvr1.jpg','baebz.jpg','baesnaps.jpg','baileyknox','banner','bella.jpg','bellaclu','big.jpg','bikinigirls.jpg','bmarie.jpg','bn.jpg','bookmark','box_title_main_menu','brook.*','bulkpic','bianca1.jpg',
+            'addamsyes.jpg','ajinx.jpg','akiss.jpg','alisonbraz.jpg','ally1.jpg','amstuff','anissamature','angelabraz','ariac','arielnude','atk','allstarban.jpg','lstar.jpg','ahmc.jpg','ann5.jpg','antonella.jpg','avatar.jpg','avery','ashlee.jpg','ava\d',
+            '/b/','babess','backtohome','backtohome','badoinkvr\d.jpg','baebz.jpg','baesnaps.jpg','baileyknox','banner','bella.jpg','bellaclu','big.jpg','bignatban','bikinigirls.jpg','bmarie.jpg','bn.jpg','bonus.jpg','bookmark','box_title_main_menu','brook.*','bulkpic','bianca1.jpg',
             'baberoad.jpg','bann-01b.jpg',
-            'catycole','chloevevrier','/cm/','csh_468x80_2.jpg','chase.jpg','charlotte','cosmid.jpg','cake.jpg','candygirl.jpg','chey.jpg','camsodagirl.jpg','cwhyes','CXiXwn.jpg',
+            'catycole','CheekyA','chloevevrier','/cm/','csh_468x80_2.jpg','chase.jpg','charlotte','cosmid.jpg','cake.jpg','candygirl.jpg','chey.jpg','camsodagirl.jpg','cwhyes','CXiXwn.jpg',
             'danica.jpg','darciebraz.jpg','darciecher.jpg','nymoody.jpg','ddfyes.jpg','dannii.jpg','dice.jpg','dream','digitaldesire',
-            'eyr.jpg','ecole.jpg','eclub.jpg','egasson.jpg','edildo.jpg','esperanza.jpg','evaloviayes','evilangelmini2','ewa',
-            'fancentro.jpg','friends','front','frontpage','footer','fowler.jpg','ftvm.jpg','ftvgirls.jpg','freckles.jpg','fsc.jpg','freecams.jpg','folio.jpg','-f2.jpg',
+            'eyr.jpg','ecole.jpg','eclub.jpg','egasson.jpg','edildo.jpg','ellabraz','esperanza.jpg','evalovia.*','evilangel.*','ewa',
+            'fancentro.jpg','friends','front','frontpage','footer','fowler.jpg','ftv.*','freckles.jpg','fsc.jpg','freecams.jpg','folio.jpg','-f2.jpg',
             'gallery-','gallary_','gemma.jpg','girls/','girlsway.jpg','gfr','gainsize.jpg','glamm.jpg','glamourshow.jpg',
             'himg.jpg','hdlove.jpg','header','header2','hor_','high.jpg','hahn.jpg','hayleysec.jpg','hayleys.jpg','humphreys\d*.jpg',
-            'iblowjob.jpg','/index_','imgs/','/img','images/15','inude.jpg','ingerie.jpg','istri?p.*?\.jpg',
+            'iblowjob.jpg','ldmban','/index_','imgs/','/img','images/15','inude.jpg','ingerie.jpg','istri?p.*?\.jpg','ivyy',
             'jelenasexy','jenann.jpg','jay.jpg','jess\d*','juliann',
-            'kalir','Katie.jpg','katrinporto','kay.jpg','kaylak.jpg','kris','karinew.jpg','khandi.jpg','kimber.jpg','kissban.jpg','kiraqueen.jpg','kendrick.jpg',
-            'laylabraz','littlepics','lia.jpg','lily.jpg','live1.jpg','logo','louise.jpg','lflash.jpg','lucyv.jpg','ley.jpg','ldmyes.jpg','laurenp.jpg',
-            'madison\d','mancini.jpg','main','madden.jpg','mac*kenzies*\d*.jpg','maren.jpg','marxs.jpg','monicam.jpg','morazzia.jpg','m1.nsimg.net','myboobs.jpg','mercedez.jpg','more-galleries.jpg','monroe.*\.jpg',
+            'kalir','Katie.jpg','katrinporto','kay.jpg','giselle','kaylak.jpg','kris','karinew.jpg','khandi.jpg','kimber.jpg','kissban.jpg','kiraqueen.jpg','kendrick.jpg',
+            'laylabraz','leannecrownude','littlepics','lia.jpg','lily.jpg','live1.jpg','logo','louise.jpg','lflash.jpg','lucyv.jpg','ley.jpg','ldmyes.jpg','laurenp.jpg',
+            'madison\d','mancini.jpg','main','madden.jpg','mac*kenzies*\d*.jpg','maren.jpg','mfcleaderboard_1','marxs.jpg','mistygban','monicam.jpg','morazzia.jpg','m1.nsimg.net','myboobs.jpg','mercedez.jpg','more-galleries.jpg','monroe.*\.jpg',
             'natashaban.jpg','newupdates','nfbusty.jpg','ng2.jpg','ngg','nicolette.jpg','ninakayy.jpg','nov','ntyler.jpg','nise.jpg','netis.jpg','nubilesporn1',
-            'oct','offer','officefan.jpg','orig_\d*\.jpg','olivia.jpg',
-            'paris.jpg','patty','paysite.jpg','paysite_icons','petabraz.jpg','pinup.jpg','pinupfiles.jpg','peta.jpg','premium.jpg',
-            'rain.jpg','ridol.jpg','robyn.jpg','rta.jpg','realgirls.jpg',
+            'oct','offer','officefan.jpg','orig_\d*\.jpg','olivia.jpg','onlysilk','otspecial',
+            'paris.jpg','patty','paysite.jpg','paysite_icons','pbtv-\d*','petabraz.jpg','pinup.jpg','pinupfiles.jpg','peta.jpg','playboy','premium.jpg','preview_.*',
+            'rain.jpg','ran10','ridol.jpg','robyn.jpg','romibrazzers','rta.jpg','realgirls.jpg',
             'sarah\d*.jpg','sarah-mcdonald\d*.jpg','sascha','score.*?\.jpg','Screen-Shot','search','seeher.jpg','separator','simsnew.jpg','sheridan.jpg','siri.jpg','skintightglam','skyla','slide','small','smclub.jpg','snude.jpg','sophiedee1.jpg','sophy.jpg','spencerprem','spinchix.jpg','spring.jpg','stasyq.jpg','stmac.jpg','sdavies.jpg',
             'spunky.jpg','_sarina.jpg','smith.jpg','striplvgirls',
-            't.jpg','tanude.jpg','tasha.jpg','Template','tgp','thumb','tk_','tn.*?\.jpg','tn2','tn_','/th','/tn','tn-','tessa.jpg','tasia.jpg','totemnewyes3.jpg','tranny.jpg','trueamateur.jpg','typein.jpg',
+            't.jpg','tanude.jpg','tasha.jpg','Template','tgp','th_\d*','th\d*x\d*','thumb','tk_','tn.*?\.jpg','tn2','tn_','/tn','tn-','tessa.jpg','tasia.jpg','totemnewyes3.jpg','tranny.jpg','trueamateur.jpg','typein.jpg',
             'upload/',
-            'vanessa-black-lace-one-piece-bella-club-2.jpg','vertical.jpg','vta','sarinavalentina.jpg',
-            'webcam','webcamyes.jpg','wellhello.jpg','wifey.jpg','withher.jpg','ww2.jpg','webbie.jpg',
+            'vanessa-black-lace-one-piece-bella-club-2.jpg','vertical.jpg','victoria','vta','sarinavalentina.jpg',
+            'w4b','webcam','webcamyes.jpg','wellhello.jpg','wifey.jpg','withher.jpg','ww2.jpg','webbie.jpg',
             'yea.jpg','ytease.jpg','ycake.jpg','ywinters.jpg','yesboobs.jpg','yjay.jpg',
             'zara4.jpg','zishy.jpg'
 

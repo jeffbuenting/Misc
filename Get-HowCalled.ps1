@@ -7,9 +7,9 @@ Function Get-TMHowCalled {
     )
     $Myinvocation
     write-output "*$($MyInvocation.line)*"
-    If ($MyInvocation.Line -eq 'ghc') {
+    If ($MyInvocation.invocationName -eq 'ghc') {
         Write-Output -Verbose 'Alias was used.'
-    } ElseIf ($MyInvocation.Line -eq 'Get-TMHowCalled') {
+    } ElseIf ($MyInvocation.InvocationName -eq 'Get-TMHowCalled') {
         Write-Output -Verbose 'Function name was used.'
     }
 }

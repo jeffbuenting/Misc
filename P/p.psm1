@@ -18,6 +18,8 @@ Function Get-PImageJPGFromSRC {
         $WP = $WebPage
         $Pics = @()
 
+        write-Verbose "Excludedwords = $($ExcludedWords | out-string)"
+
         #-------------------------------------------------------------------------------
         # ----- Images on the page.
         Write-verbose "Get-PImages : ---------------------------- Checking for images on page."
@@ -73,6 +75,8 @@ Function Get-PImageJPGFromSRC {
                                     $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose
                                 }
 
+                                Write-Verbose "Adding / to link if it needs one between Root and Link"
+                                if (( $PotentialIMG[0] -ne '/' ) -and ( $Root[$Root.length - 1] -ne '/' ) ) { $PotentialIMG = "/$PotentialIMG" } 
                            
 
                                 # ----- Checking if image is a valid path
@@ -157,6 +161,8 @@ Function Get-PImageJPGFFromFullURL {
     }
 }
 
+# -------------------------------------------------------------------------------------
+
 Function Get-PImageJPGbyaddingHTTP {
 
 <#
@@ -206,7 +212,9 @@ Function Get-PImageJPGFFromRelativeLink {
     Param (
         [PSCustomObject]$WebPage,
 
-        [string[]]$ExcludedWords
+        [string[]]$ExcludedWords,
+
+        [int]$RecurseLevel = 0
     )
 
     Process {
@@ -249,8 +257,16 @@ Function Get-PImageJPGFFromRelativeLink {
                 # ----- Check if the image exists
                 Write-Verbose "Get-PImage : Checking if image path exists and correct : $Root$HREF"
                 if ( Test-IEWebPath -Url $Root$HREF -ErrorAction SilentlyContinue ) {
-                        Write-Verbose "-----Found: $Root$HREF"
-                        Write-Output $Root$HREF
+                        
+                        # ----- if the link has a ? in it then it is not a valid image.  Shoul follow the link
+                        if ( "$Root$HREF" | select-string -Pattern '\?' -Quiet ) {
+                            Write-Verbose "Link contains ? : Following link"
+                            Get-IEWebPage -url $Root$HREF | Get-PImages -ExcludedWords $ExcludedWords -RecurseLevel ($RecurseLevel++) -Verbose | Write-Output
+                        }
+                        else {
+                            Write-Verbose "-----Found: $Root$HREF"
+                            Write-Output $Root$HREF
+                        }
                     }
                     else {
                         Write-Verbose "Get-PImage : Root/HREF is not valid.  Checking Root/JPG"

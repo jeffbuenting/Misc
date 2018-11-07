@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'https://www.anyshemale.com/videos/4238/busty-bailey-jerking-her-big-dick/'
+$Url = 'http://www.boobjunkie.com/nikki-sims-bubble-bikini/'
 
 $Url | Foreach {
 

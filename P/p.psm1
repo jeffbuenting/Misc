@@ -1,122 +1,21 @@
 ﻿# -------------------------------------------------------------------------------------
-
-Function Get-PImageJPGFromSRC {
-
-<#
-    .synopsis
-        Does a SRC tag have a jpg file
-#>
-
-    [CmdletBinding()]
-    Param (
-        [PSCustomObject]$WebPage,
-
-        [string[]]$ExcludedWords
-    )
-
-    Process {
-        $WP = $WebPage
-        $Pics = @()
-
-        write-Verbose "Excludedwords = $($ExcludedWords | out-string)"
-
-        #-------------------------------------------------------------------------------
-        # ----- Images on the page.
-        Write-verbose "Get-PImages : ---------------------------- Checking for images on page."
-
-        $WP.HTML.images | where src -match '\d*\.jpg' | foreach {
-            $SRC = $_.SRC
-
-            Write-Verbose "Get-PImages : Examining: $($_.src)"
-
-            # ----- Check if any excluded word is in the string.
-            if ( $_.src | Select-String -Pattern $ExcludedWords -NotMatch ) {                                      
-
-                    # ----- Match was 
-                    Write-Verbose "Get-PImage : ----- $SRC -- Does the image start with HTTP?" 
-                    if ( ( $_.SRC -Match 'http:\/\/.*\/\d*\.jpg' ) -or ($_.SRC -Match 'http:\/\/.*\d*\.jpg' ) -or ( $_.SRC -Match 'https:\/\/.*\/\d*\.jpg' ) -or ($_.SRC -Match 'https:\/\/.*\d*\.jpg' ) ) { 
-                            Write-Verbose "Get-PImages : returning full JPG Url $($_.SRC)"
-                      
-                            $Pics += $_.SRC
-                            Write-Verbose "Get-PImages : -----Found: $($_.SRC)"
-                            Write-Output $_.SRC 
-                    }
-
-                    Write-Verbose "Get-PImage : ----- $($_.src) -- No HTTP or HTTPS"                  
-                    If ( ($_.SRC -notmatch 'http:\/\/.*' ) -and ($_.SRC -notmatch 'https:\/\/.*') ) {
-                            
-                                $PotentialIMG = $_.SRC
-                            
-                                # ----- Check if the link contains /tn_.  if so remove and process image
-                                if ( $PotentialIMG.Contains( "\/tn_") ) {
-                                    $PotentialIMG = $PotentialIMG.Replace( '/tn_','/')
-                                }
-
-                                # ----- Try just adding http to the beginning and see if that is a valid URL
-                                Write-Verbose "Trying to add HTTP: if it begins with //"
-                                if ( $PotentialIMG.substring(0,2) -eq '//' ) {
-                                    Write-Verbose 'Yep // exists'
-                                    if ( Test-IEWebPath -Url "http:$PotentialIMG" -ErrorAction SilentlyContinue ) {
-                                        Write-Verbose "-----Found: http:$PotentialIMG"
-                                        $Pics += "http:$PotentialIMG"
-                                        Write-Output "http:$PotentialIMG"
-                                        Return
-                                    }
-                                }
+# ----- Dot source the functions in the Functions folder of this module
+# ----- Ignore any file that begins with @, this is a place holder of work in progress.
 
 
-                                Write-Verbose "Get-PImages : JPG Url is relitive path.  Need base/root."
-                                $Root = Get-HTMLBaseUrl -Url $WP.Url -Verbose
-                                if ( -Not $Root ) { $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose }
+Get-ChildItem -path $PSScriptRoot\Functions\*.ps1 | where Name -notlike '@*' | Foreach { 
+    Write-Verbose "Dot Sourcing $_.FullName"
 
-                                # ----- Check to see if valid URL.  Should not contain: //
-                                if ( ("$Root$_" | select-string -Pattern '\/\/' -allmatches).matches.count -gt 1 )  {
-                                    Write-Verbose "Get-PImages : Illegal character, Getting Root"
-                                    $Root = Get-HTMLRootUrl -Url $WP.Url -Verbose
-                                }
-
-                                Write-Verbose "Adding / to link if it needs one between Root and Link"
-                                if (( $PotentialIMG[0] -ne '/' ) -and ( $Root[$Root.length - 1] -ne '/' ) ) { $PotentialIMG = "/$PotentialIMG" } 
-                           
-
-                                # ----- Checking if image is a valid path
-                                # $URL = "$Root$($_.SRC)"
-                                #  Write-Verbose "+++++++++++$Root$($_.SRC)"
-                                if ( Test-IEWebPath -Url "$Root$PotentialIMG" -ErrorAction SilentlyContinue ) {
-                                        $Pics += "$Root$PotentialIMG"
-
-                                        Write-Verbose "-----Found: $Root$PotentialIMG"
-                                        Write-Output "$Root$PotentialIMG"
-                                    }
-                                    else {
-                                        Write-Verbose "Get-PImage : Root/SRC is not valid.  Checking Root/JPG"
-                                        $JPG = $PotentialIMG | Select-String -Pattern '([^\/]+.jpg)' | foreach { $_.Matches[0].value }
-                                        if ( Test-IEWebPath -Url $Root$JPG ) {
-                                            Write-Verbose "-----Found: $Root$JPG"
-                                            Write-Output $Root$JPG
-                                        }
-                                }
-                            }
-                            Else {
-                                Write-Verbose "Get-PImages :  Image not found $($_.SRC)"
-                                write-verbose "$_.SRC"
-                                write-Verbose "fluffernuter"
-
-                        
-                            
-                    }
-                }
-                else {
-                    Write-Verbose "$($_.SRC) matches:"
-                    Write-Verbose "Excluded Pattern = $(($_.src | Select-String -Pattern $ExcludedWords).Pattern ) "
-            }
-
-        }
-
-        Write-Output $Pics
-
-    }
+    . $_.FullName 
 }
+
+
+
+#------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------------
+
+
 
 # -------------------------------------------------------------------------------------
 
@@ -479,139 +378,7 @@ Function Get-PImageJPGFFromThumbnailSRC {
 # -------------------------------------------------------------------------------------
 # -------------------------------------------------------------------------------------
 
-Function Get-PImages {
 
-    [CmdletBinding()]
-    Param (
-        [Parameter(ValueFromPipeline=$True)]
-        [PSCustomObject[]]$WebPage,
-
-        [string[]]$ExcludedWords,
-
-        [int]$RecurseLevel = 0,
-
-        [int]$MaxRecurseLevel = 1
-    ) 
-
-    process {
-        Write-Verbose "Get-PImage : Recurse Level : $RecurseLevel"
-        Write-Verbose "Adding recurse level"
-        $RecurseLevel ++
-
-        ForEach ( $WP in $WebPage ) {
-
-            Write-Verbose "Get-PImages : Getting Images from $($WP.URL)..."
-
-            Try {
-                Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-                Write-Verbose " Get-PImageJPGFromSRC"
-                Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"      
-
-                $Pics = Get-PImageJPGFromSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop 
-             
-                if ( $Pics ) { 
-                    Write-Verbose "images from src"
-                    Write-Verbose "$($Pics | out-string)"
-                    Write-Output $Pics
-                    break 
-                }
-            }
-            Catch {
-                $ExceptionMessage = $_.Exception.Message
-                $ExceptionType = $_.Exception.GetType().FullName
-                Throw "Get-PImage : Error getting images from SRC.`n`n     $ExceptionMessage`n     $ExceptionType"
-            }
-
-            
-            # ----- Check for full URL to Images ( jpgs )
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Write-Verbose " Get-PImageJPGFromFullUr"
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Try {
-                $Pics =  Get-PImageJPGFFromFullURL -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
-
-                if ( $Pics ) { 
-                    Write-Verbose "full URL to Images ( jpgs )"
-                    Write-Verbose "$($Pics | out-string)"
-                    Write-Output $Pics
-                    break 
-                }
-            }
-            Catch {
-                $ExceptionMessage = $_.Exception.Message
-                $ExceptionType = $_.Exception.GetType().FullName
-                Throw "Get-PImage : Error full URL to Images ( jpgs ).`n`n     $ExceptionMessage`n     $ExceptionType"
-            }
-            
-            # ----- Check to see if there are links to images ( jpgs ) - Relative Links (not full URL)
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Write-Verbose " Get-PImageJPGFromRelativeLink"
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Try {
-                $Pics = Get-PImageJPGFFromRelativeLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
-            
-                if ( $Pics ) { 
-                    Write-Verbose "JPGs from Relative Links"
-                    Write-Verbose "$($Pics | out-string)"
-                    Write-Output $Pics
-                    break 
-                }
-
-                Write-Verbose "!!!!!!! No JPG from Relative Links"
-            }
-            Catch {
-                $ExceptionMessage = $_.Exception.Message
-                $ExceptionType = $_.Exception.GetType().FullName
-                Throw "Get-PImage : Error JPGs from Relative Links.`n`n     $ExceptionMessage`n     $ExceptionType"
-            }
-
-            
-
-            # ----- Check for links to image page ( ddd.htm )
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Write-Verbose " Get-PImageJPGFromHTMLLink"
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Try {
-                $Pics = Get-PImageJPGFFromHTMLLink -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
-  
-                if ( $Pics ) { 
-                    Write-Verbose "JPGs links to images"
-                    Write-Verbose "$($Pics | out-string)"
-                    Write-Output $Pics
-                    break 
-                }
-            }
-            Catch {
-                $ExceptionMessage = $_.Exception.Message
-                $ExceptionType = $_.Exception.GetType().FullName
-                Throw "Get-PImage : Error JPGs links to images.`n`n     $ExceptionMessage`n     $ExceptionType"
-            }
-
-            # ----- Checking for links where the src is a jpg thumbnail ( link does not end in html )
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Write-Verbose " Get-PImageJPGFromThumbnailSRC"
-            Write-Verbose "Get-PImages : -------------------------------------------------------------------------------------"
-            Try {
-                $Pics = Get-PImageJPGFFromThumbnailSRC -WebPage $WP -ExcludedWords $ExcludedWords -Verbose -ErrorAction Stop
-
-                if ( $Pics ) { 
-                    Write-Verbose "Checking for links where the src is a jpg thumbnail ( link does not end in html )"
-                    Write-Verbose "$($Pics | out-string)"
-                    Write-Output $Pics
-                    break 
-                }
-           }
-            Catch {
-                $ExceptionMessage = $_.Exception.Message
-                $ExceptionType = $_.Exception.GetType().FullName
-                Throw "Get-PImage : Error Checking for links where the src is a jpg thumbnail.`n`n     $ExceptionMessage`n     $ExceptionType"
-            }
-        }
-    }
-
-
-
-}
 
 #--------------------------------------------------------------------------------------
 

@@ -1,4 +1,5 @@
-﻿try {
+﻿
+try {
         import-module C:\Scripts\InternetExplorer\InternetExplorer.psd1 -force -ErrorAction Stop
 
         Import-Module C:\scripts\FileSystem\filesystem.psd1 -force -ErrorAction Stop
@@ -55,26 +56,25 @@ $ExcludedWords = '-set.jpg',
             'a\d\d\d','aa-ban','abbey','addamsyes.jpg','action','ajinx.jpg','akiss.jpg','alirose','alisonbraz.jpg','alisa-kiss.jpg','alexsisf','alley\d+','ally1.jpg','amstuff','anselee2','anissamature','angelabraz','and01','annarose','ariac','arielnude','atk','allstarban.jpg','lstar.jpg','ahmc.jpg','ann5.jpg','antonella.jpg','avatar.jpg','avery','ashlee.jpg','ava\d',
             '/b/','babess','babevr','backtohome','backtohome','badoinkvr\d*','baebz.jpg','baesnaps.jpg','baileyknox','banner','bella.jpg','Bella-Loves-To-Talk-Dirty','bellaclu','big.jpg','big-img','bignatban','bigpic','bikinigirls.jpg','bls_300x167.jpg','bmarie.jpg','bn.jpg','bonus.jpg','bustylegends','bustypl_maria01','bookmark','box_title_main_menu','brianaya','brid','brook.*','bulkpic','bianca1.jpg',
             ,'babesbnr','baberoad.jpg','bann-01b.jpg','bray',
-            'candicefoxes','castingcouch','catycole','chaturbate_busty','CheekyA','chelsea','chloevevrier','cjmiles','/cm/','csh_468x80_2.jpg','chase.jpg','chaturbate_big_boobs','charlotte','cherrypimps','cosmid.jpg','cake.jpg','candygirl.jpg','chey.jpg','camsodagirl.jpg','closelabel','collegegf','cover','cropped','cwhyes','CXiXwn.jpg',
-            'danidan.jpg','danica.jpg','danielle3','dannigee','darciebraz.jpg','darciecher.jpg','desk\d','nymoody.jpg','ddfyes.jpg','dannii.jpg','diana\d+','dice.jpg','dirtytalkinglowres','dream','digitaldesire',
+            'candicefoxes','castingcouch','catycole','chaturbate_busty','CheekyA','chelsea','chloevevrier','cjmiles','/cm/','csh_468x80_2.jpg','chase.jpg','chaturbate_big_boobs','charlotte','cherrypimps','cosmid.jpg','cropped-stockings','cake.jpg','candygirl.jpg','chey.jpg','camsodagirl.jpg','closelabel','collegegf','cover','cwhyes','CXiXwn.jpg',
+            'danidan.jpg','danica.jpg','danielle3','dannigee','darciebraz.jpg','darciecher.jpg','nymoody.jpg','ddfyes.jpg','dannii.jpg','diana\d+','dice.jpg','dirtytalkinglowres','dream','digitaldesire',
             'eyr.jpg','ecole.jpg','eclub.jpg','egasson.jpg','edildo.jpg','elizabraz','ellabraz','emberbanathome','emilybloom','esperanza.jpg','evalovia.*','evilangel.*','ewa',
-            'fancentro.jpg','feature','fdau1','fhg_head','fp\d\.jpg','freemovie','friends','front','frontpage','fondo\d+_\d','footer','fowler.jpg','foxxy','ftv.*','freckles.jpg','fsc.jpg','freecams.jpg','folio.jpg','-f2.jpg',
-            'gallery-','gallery_','general-mini-2','gemma.jpg','gfleaks','girls/?','girlsway.jpg','gfr','gainsize.jpg','glamm.jpg','glamouridols','glamourshow.jpg',
+            'fancentro.jpg','fdau1','fhg_head','fp\d\.jpg','freemovie','friends','front','frontpage','fondo\d+_\d','footer','fowler.jpg','foxxy','ftv.*','freckles.jpg','fsc.jpg','freecams.jpg','folio.jpg','-f2.jpg',
+            'gallery-','gallery_','gemma.jpg','gfleaks','girls/?','girlsway.jpg','gfr','gainsize.jpg','glamm.jpg','glamouridols','glamourshow.jpg',
             'haley55','hardcore','harmony','hdr','himg.jpg','hdlove.jpg','header','header2','hor_','hosteds','high.jpg','hahn.jpg','hayleysec.jpg','hayleys.jpg','hugecocks','humphreys\d*.jpg',
             'iblowjob.jpg','icon-otherofficialsites','ldmban','/?index\d?_','imgs/','/img','images/15','inude.jpg','ingerie.jpg','istri?p.*?\.jpg','ivyy',
-            'jadek','Jasmine-Sinclair_01','JCTitle','jeans_cowboyhat','jelena\d+','jelenasexy','jenann.jpg','jay.jpg','jess\d*','jma','join','jordan','juggsjoy','juliann',
+            'jadek','JCTitle','jeans_cowboyhat','jelena\d+','jelenasexy','jenann.jpg','jay.jpg','jess\d*','jma','join','jordan','juggsjoy','juliann',
             'kalir','karend','Katie.jpg','katrinporto','katyac','kay.jpg','kelly22','kendraban','kiki','giselle','kaylak.jpg','kris','karinew.jpg','khandi.jpg','kimber','kissban.jpg','kiraqueen.jpg','kendrick.jpg',
             'laylabraz','lb3','leannecrownude','lela','lenapaulbag','littlepics','lia.jpg','lily.jpg','link\d','live1.jpg','logo','long','louise.jpg','lflash.jpg','lucyv.jpg','ley.jpg','ldmyes.jpg','laurenp.jpg','lynda',
-            'madison\d','mancini.jpg','main','madden.jpg','mac*kenzies*\d*.jpg','maren.jpg','mast(er)?head','megan-qt_336','mfcleaderboard_1','miban',,'marxs.jpg','mistygban','monicam.jpg','more','morazzia.jpg','morey','m1.nsimg.net','mya10','myboobs.jpg','myfreecams_bigboobs','mywifeashley','mercedez.jpg','more-galleries.jpg','monroe.*\.jpg',
+            'madison\d','mancini.jpg','main','madden.jpg','mac*kenzies*\d*.jpg','maren.jpg','megan-qt_336','mfcleaderboard_1','miban',,'marxs.jpg','mistygban','monicam.jpg','more','morazzia.jpg','morey','m1.nsimg.net','mya10','myboobs.jpg','myfreecams_bigboobs','mywifeashley','mercedez.jpg','more-galleries.jpg','monroe.*\.jpg',
             'natashaya','natashaban.jpg','neesy','netvideogirls','nf32x32','nbc.jpg','newupdates','nextdoornikki_04_30','nfbusty.jpg','ng2.jpg','ngg','nicolette.jpg','nikki3','ninakayy.jpg','nov','ns-','ntyler.jpg','nise.jpg','netis.jpg','nubilesporn1','nubyes','nmag',
-            'oct','offer','officefan.jpg','orig_\d*\.jpg','olivia.jpg','onlysilk','otspecial',
+            'oct','offer','officefan.jpg','orig_\d*\.jpg','olivia.jpg','onlysilk','ot\d*','otspecial',
             'pam\d+','paris.jpg','patty','passion','paysite.jpg','paysite_icons','pbtv-\d*','petabraz.jpg','petiteteenager.com','pinup.jpg','pinupfiles.jpg','peta.jpg','playboy','premium.jpg','preetiandpriya01','preview_?','prevv','princess',
-            'r\d\d','rain.jpg','ran10','ridol.jpg','robyn.jpg','romibrazzers','rta.jpg','realgirls.jpg',
+            'rain.jpg','ran10','ridol.jpg','robyn.jpg','romibrazzers','rta.jpg','realgirls.jpg',
             'sabann_468x80_02','sarah\d*.jpg','sarah-mcdonald\d*.jpg','sascha','samanta','score.*?\.jpg','Screen-Shot','search','seeher.jpg','separator','shemale','simsnew.jpg','simone_fox-238','sinner','site','sheridan.jpg','siri.jpg','skintightglam','skyla','slide','small','smclub.jpg','snude.jpg','sophiedee1.jpg','sophy.jpg','spencerprem','spinchix.jpg','spring.jpg','stasyq.jpg','stmac.jpg','stockingfetish','stormybraz','studio','sdavies.jpg',
-            'spunky.jpg','_sarina.jpg','smallimage\d*','smith.jpg','static\d+','striplvgirls','suze-750233',
-            't\d*.jpg','t_\d*.jpg','t1-Join-Now-fitmichelle','tanude.jpg','tasha.jpg','teenravepink','tcurve','Template','tgp','th\d*','th_\d+','th\d*x\d*','thumb','title.jpg','tk_','tn.*?\.jpg','tn2','tn_','/tn','tn-','tessa.jpg','tasia.jpg','top','totemnewyes3.jpg','tp\d*','tranny.jpg','trueamateur.jpg','typein.jpg','twitter',
-            'upload',
-            'vanessa-black-lace-one-piece-bella-club-2.jpg','vertical.jpg','victoria','video','vta','sarinavalentina.jpg','vrcosplayx',
+            'spunky.jpg','_sarina.jpg','smallimage\d*','smith.jpg','striplvgirls','suze-750233',
+            't.jpg','t1-Join-Now-fitmichelle','tanude.jpg','tasha.jpg','teenravepink','tcurve','Template','tgp','t\d*','th_\d+','th\d*x\d*','tk_','tn.*?\.jpg','tn2','tn_','/tn','tn-','tessa.jpg','tasia.jpg','top','totemnewyes3.jpg','tranny.jpg','trueamateur.jpg','typein.jpg','twitter',
+            'vanessa-black-lace-one-piece-bella-club-2.jpg','vertical.jpg','victoria','vta','sarinavalentina.jpg','vrcosplayx',
             'w4b','wankr','webcam','webcamyes.jpg','wellhello.jpg','wide[_\-]','wifey.jpg','withher.jpg','ws','ww2.jpg','webbie.jpg',
             'yanks','yea.jpg','ytease.jpg','ycake.jpg','ywinters.jpg','yesboobs.jpg','yjay.jpg',
             'zara4.jpg','zishy.jpg'
@@ -97,7 +97,7 @@ foreach ( $L in $Links ) {
     write-host "Link:  $($L.Url)" -ForegroundColor Green
     Write-Host "Path:  $($L.Path)" -ForegroundColor Green
 
-    $IE =  $L.Url | Get-WebPage -Browser IE -Visible -verbose
+    $IE =  $L.Url | Get-IEWebPage -Visible -verbose
 
     # ----- Manually get the save path if one is not in the CSV
     if ( -Not ( $L.Path ) ) {
@@ -113,14 +113,20 @@ foreach ( $L in $Links ) {
                 else {
                      
                     Write-Host "Destination already Exists: $destinationPath" -ForegroundColor Yellow
-                    Write-Host "Opening Destination to double check if the images already exist" -ForegroundColor Green
-                    explorer $DestinationPath
-                    if ( (New-Popup -Message "Do the images already exist?" -Title 'No errors' -Time 60 -Buttons 'YesNo') -eq 6 ) {
+
+                    Write-Host "Getting existing files"
+                    $Existing = Get-Childitem -Path $DestinationPath
+
+
+
+             #       Write-Host "Opening Destination to double check if the images already exist" -ForegroundColor Green
+             #       explorer $DestinationPath
+             #       if ( (New-Popup -Message "Do the images already exist?" -Title 'No errors' -Time 60 -Buttons 'YesNo') -eq 6 ) {
             
-                    }
+              #      }
                     # ----- Save link to write to log
-                    $FileExists += $L
-                    Continue
+        #            $FileExists += $L
+        #            Continue
             }
                     
     }
@@ -133,7 +139,25 @@ foreach ( $L in $Links ) {
 
 
 
-    $Images = $IE | Get-PImages -verbose -ExcludedWords $ExcludedWords
+    $I = $IE | Get-PImages -verbose -ExcludedWords $ExcludedWords
+
+
+    Write-Host "Check if image already exists in folder"
+    $Images = @()
+
+    if ( $Exists ) {
+
+        $I | foreach {
+            if ( (Compare-Object $_.split('/')[-1] $Exists.Name -IncludeEqual | where SideIndicator -ne '==') ) {
+                $Images += $_
+
+            }
+        }
+    }
+    else {
+
+        $Images = $I
+    }
     
     "-----------"   
     $Images

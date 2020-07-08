@@ -19,7 +19,7 @@ try {
 }
 
 
-$Url = 'http://www.boobjunkie.com/nikki-sims-bubble-bikini/'
+$Url = 'http://galleries7.petiteteenager.com/1/movietest/'
 
 $Url | Foreach {
 
